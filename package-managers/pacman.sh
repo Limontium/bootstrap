@@ -5,6 +5,12 @@
 # ------------------------------------------------------------
 
 pkg_update() {
+    if [[ "$DISTRO" == "omarchy" ]] && command_exists omarchy; then
+        info "Updating Omarchy system"
+        omarchy update
+        return 0
+    fi
+
     info "Updating Arch package database and system"
     run_sudo pacman -Syu --noconfirm
 }

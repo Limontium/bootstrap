@@ -55,8 +55,6 @@ fi
 zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
 
-zstyle ':omz:alpha:lib:git' async-prompt no
-
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit cdclear -q
