@@ -55,13 +55,11 @@ fi
 zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
 
-zinit ice wait lucid
 zinit light zsh-users/zsh-autosuggestions
 
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
 
-# Load highlighting last.
 zinit ice wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
