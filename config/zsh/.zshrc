@@ -31,6 +31,8 @@ SAVEHIST=10000
 setopt appendhistory
 setopt hist_ignore_dups
 setopt hist_reduce_blanks
+setopt sharehistory
+setopt incappendhistory
 
 # ---------------------------------------------------------
 # Completion
@@ -38,10 +40,12 @@ setopt hist_reduce_blanks
 
 autoload -Uz compinit
 
-if [[ -n "$ZDOTDIR/.zcompdump"(#qN.mh+24) ]]; then
-    compinit
+ZCOMPDUMP_FILE="${ZDOTDIR:-$HOME}/.zcompdump"
+
+if [[ -n "$ZCOMPDUMP_FILE"(#qN.mh+24) ]]; then
+    compinit -d "$ZCOMPDUMP_FILE"
 else
-    compinit -C
+    compinit -C -d "$ZCOMPDUMP_FILE"
 fi
 
 # ---------------------------------------------------------
@@ -64,11 +68,18 @@ zinit snippet OMZT::cloud
 # External plugins
 # ---------------------------------------------------------
 
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid; zinit light Aloxaf/fzf-tab
 
 # Load highlighting last.
-zinit light zsh-users/zsh-syntax-highlighting
+zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
+
+# ---------------------------------------------------------
+# History prefix search
+# ---------------------------------------------------------
+
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
 
 # ---------------------------------------------------------
 # Tools
