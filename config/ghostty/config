@@ -1,0 +1,40 @@
+theme = Deep
+
+font-family = Lilex Nerd Font
+font-style = Regular
+font-size = 12
+font-feature = calt
+font-feature = liga
+font-feature = clig
+
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+window-padding-balance = true
+confirm-close-surface = false
+resize-overlay = never
+
+background-opacity = 0.95
+unfocused-split-opacity = 0.95
+
+cursor-style = block
+cursor-style-blink = false
+
+shell-integration-features = no-cursor,ssh-env
+
+scrollback-limit = 10000
+
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = control+shift+c=copy_to_clipboard
+keybind = control+shift+v=paste_from_clipboard
+keybind = shift+enter=csi:13;2u
+keybind = alt+shift+enter=csi:13;4u
+
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+mouse-scroll-multiplier = 0.95
+async-backend = epoll
