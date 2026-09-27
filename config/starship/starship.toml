@@ -1,0 +1,40 @@
+add_newline = false
+
+format = """
+[☁  ](bold cyan)\
+$directory\
+$git_branch\
+$character
+"""
+
+[directory]
+format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](bold green) "
+truncation_length = 1
+truncate_to_repo = false
+
+[git_branch]
+symbol = ""
+format = "[\\[](bold green)[$branch](bold cyan)[\\]](bold green) "
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[➜](bold red) "
+vimcmd_symbol = "[➜](bold green) "
+
+[cmd_duration]
+disabled = true
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[golang]
+disabled = true

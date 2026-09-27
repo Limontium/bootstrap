@@ -49,30 +49,21 @@ else
 fi
 
 # ---------------------------------------------------------
-# Oh My Zsh snippets
+# Zinit plugins
 # ---------------------------------------------------------
 
 zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
 
-zstyle ':omz:alpha:lib:git' async-prompt no
+zinit ice wait lucid
+zinit light zsh-users/zsh-autosuggestions
 
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
-zinit cdclear -q
-
-setopt promptsubst
-zinit snippet OMZT::cloud
-
-# ---------------------------------------------------------
-# External plugins
-# ---------------------------------------------------------
-
-zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
-zinit ice wait lucid; zinit light Aloxaf/fzf-tab
+zinit ice wait lucid
+zinit light Aloxaf/fzf-tab
 
 # Load highlighting last.
-zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
+zinit ice wait lucid
+zinit light zsh-users/zsh-syntax-highlighting
 
 # ---------------------------------------------------------
 # History prefix search
@@ -89,6 +80,10 @@ if (( $+commands[zoxide] )); then
     eval "$(zoxide init zsh --cmd cd)"
 fi
 
+if (( $+commands[starship] )); then
+    eval "$(starship init zsh)"
+fi
+
 # ---------------------------------------------------------
 # Aliases
 # ---------------------------------------------------------
@@ -97,6 +92,30 @@ alias v="nvim"
 alias c="clear"
 alias y="yazi"
 alias lg="lazygit"
+
+alias g="git"
+alias gst="git status"
+
+alias ga="git add"
+alias gaa="git add --all"
+
+alias gcmsg="git commit -m"
+
+alias gp="git push"
+alias gpf="git push --force-with-lease"
+alias gl="git pull"
+
+git_default_branch() {
+    git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null \
+        | sed 's@^refs/remotes/origin/@@'
+}
+
+alias gcm='git switch $(git_default_branch)'
+alias gco="git checkout"
+alias gcb="git checkout -b"
+
+alias gb="git branch"
+alias gbD="git branch -D"
 
 alias ls="eza --icons"
 alias l="eza --icons"

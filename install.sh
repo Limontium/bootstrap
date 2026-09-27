@@ -21,6 +21,7 @@ source "${ROOT_DIR}/lib/verify.sh"
 source "${ROOT_DIR}/modules/base.sh"
 source "${ROOT_DIR}/modules/git.sh"
 source "${ROOT_DIR}/modules/zsh.sh"
+source "${ROOT_DIR}/modules/starship.sh"
 source "${ROOT_DIR}/modules/fonts.sh"
 source "${ROOT_DIR}/modules/lazygit.sh"
 source "${ROOT_DIR}/modules/yazi.sh"
@@ -46,6 +47,7 @@ main() {
     install_base
     install_git
     install_zsh
+    install_starship
     install_fonts
     install_lazygit
     install_yazi
