@@ -17,7 +17,8 @@ install_base() {
         ffmpegthumbnailer \
         poppler \
         imagemagick \
-        7zip
+        7zip \
+        fzf
 
     ok "Base system packages installed"
 }
