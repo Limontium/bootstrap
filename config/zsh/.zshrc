@@ -21,18 +21,31 @@ export EDITOR="nvim"
 export VISUAL="$EDITOR"
 
 # ---------------------------------------------------------
+# Zsh options
+# ---------------------------------------------------------
+
+setopt AUTO_CD
+setopt INTERACTIVE_COMMENTS
+setopt NO_BEEP
+
+# ---------------------------------------------------------
 # History
 # ---------------------------------------------------------
 
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
 
-setopt appendhistory
-setopt hist_ignore_dups
-setopt hist_reduce_blanks
-setopt sharehistory
-setopt incappendhistory
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_IGNORE_SPACE
 
 # ---------------------------------------------------------
 # Completion
@@ -48,27 +61,56 @@ else
     compinit -C -d "$ZCOMPDUMP_FILE"
 fi
 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' menu no
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
 # ---------------------------------------------------------
 # Zinit plugins
 # ---------------------------------------------------------
 
+zinit ice wait lucid
 zinit snippet OMZP::sudo
+
+zinit ice wait lucid
 zinit snippet OMZP::extract
 
+zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-autosuggestions
 
 zinit ice wait lucid
-zinit light Aloxaf/fzf-tab
+zinit light zdharma-continuum/fast-syntax-highlighting
 
-zinit ice wait lucid
-zinit light zsh-users/zsh-syntax-highlighting
+# ---------------------------------------------------------
+# fzf-tab
+# ---------------------------------------------------------
+
+zstyle ':fzf-tab:*' fzf-flags --height=50% --border
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+if (( $+commands[eza] )); then
+    zstyle ':fzf-tab:complete:cd:*' \
+        fzf-preview 'eza -1 --icons --color=always $realpath 2>/dev/null'
+else
+    zstyle ':fzf-tab:complete:cd:*' \
+        fzf-preview 'ls -la $realpath 2>/dev/null'
+fi
 
 # ---------------------------------------------------------
 # History prefix search
 # ---------------------------------------------------------
 
-bindkey '^[[A' history-beginning-search-backward
-bindkey '^[[B' history-beginning-search-forward
+autoload -Uz up-line-or-beginning-search
+autoload -Uz down-line-or-beginning-search
+
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
 
 # ---------------------------------------------------------
 # Tools
@@ -83,13 +125,18 @@ if (( $+commands[starship] )); then
 fi
 
 # ---------------------------------------------------------
-# Aliases
+# General aliases
 # ---------------------------------------------------------
 
 alias v="nvim"
 alias c="clear"
-alias y="yazi"
-alias lg="lazygit"
+
+(( $+commands[yazi] )) && alias y="yazi"
+(( $+commands[lazygit] )) && alias lg="lazygit"
+
+# ---------------------------------------------------------
+# Git aliases
+# ---------------------------------------------------------
 
 alias g="git"
 alias gst="git status"
@@ -110,16 +157,28 @@ git_default_branch() {
 
 alias gcm='git switch $(git_default_branch)'
 alias gco="git checkout"
-alias gcb="git checkout -b"
+alias gcb="git switch -c"
 
 alias gb="git branch"
 alias gbD="git branch -D"
 
-alias ls="eza --icons"
-alias l="eza --icons"
-alias ll="eza -l --icons --git --group-directories-first"
-alias la="eza -la --icons --git"
-alias lt="eza --tree --icons --level=2"
-alias lta="eza --tree --icons --level=3 --all"
-alias lsize="eza -l --sort=size --icons --group-directories-first"
-alias ldate="eza -l --sort=modified --icons --group-directories-first"
+# ---------------------------------------------------------
+# eza aliases
+# ---------------------------------------------------------
+
+if (( $+commands[eza] )); then
+    alias ls="eza --icons"
+    alias l="eza --icons"
+
+    alias ll="eza -l --icons --git --group-directories-first"
+    alias la="eza -la --icons --git"
+
+    alias lt="eza --tree --icons --level=2"
+    alias lta="eza --tree --icons --level=3 --all"
+
+    alias lsize="eza -l --sort=size --icons --group-directories-first"
+    alias ldate="eza -l --sort=modified --icons --group-directories-first"
+else
+    alias ll="ls -lah"
+    alias la="ls -la"
+fi
