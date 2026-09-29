@@ -49,8 +49,8 @@ keybind = alt+8=goto_tab:8
 keybind = alt+9=goto_tab:9
 
 keybind = shift+insert=paste_from_clipboard
-keybind = control+insert=copy_to_clipboard
-keybind = control+shift+c=copy_to_clipboard
+keybind = control+insert=copy_to_clipboard:plain
+keybind = control+shift+c=copy_to_clipboard:plain
 keybind = control+shift+v=paste_from_clipboard
 keybind = shift+enter=csi:13;2u
 keybind = alt+shift+enter=csi:13;4u
