@@ -1,28 +1,43 @@
 add_newline = false
 
-format = """
-[☁  ](bold cyan)\
+format = """\
+${env_var.VIRTUAL_ENV}\
+${custom.cloud_default}\
 $directory\
 $git_branch\
-$character
 """
+
+right_format = """\
+$cmd_duration\
+"""
+
+[env_var.VIRTUAL_ENV]
+variable = "VIRTUAL_ENV"
+symbol = "☁"
+format = "[$symbol](bold bright-blue)  "
+
+[custom.cloud_default]
+when = '[ -z "$VIRTUAL_ENV" ]'
+command = 'printf "☁"'
+format = "[$output](bold cyan)  "
 
 [directory]
 format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](bold green) "
 truncation_length = 1
 truncate_to_repo = false
+read_only = " "
 
 [git_branch]
 symbol = ""
 format = "[\\[](bold green)[$branch](bold cyan)[\\]](bold green) "
 
 [character]
-success_symbol = "[➜](bold green) "
-error_symbol = "[➜](bold red) "
-vimcmd_symbol = "[➜](bold green) "
+disabled = true
 
 [cmd_duration]
-disabled = true
+disabled = false
+min_time = 3000
+format = "[• $duration  ](dimmed yellow)"
 
 [package]
 disabled = true
