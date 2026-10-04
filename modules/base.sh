@@ -14,6 +14,7 @@ install_base() {
         eza \
         btop \
         jq \
+        ddgr \
         ffmpegthumbnailer \
         poppler \
         imagemagick \

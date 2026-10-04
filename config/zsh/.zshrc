@@ -107,6 +107,14 @@ autoload -Uz down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
+WORDCHARS=''
+
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
+bindkey '^H' backward-kill-word
+bindkey '^[[3;5~' kill-word
+
 bindkey '^[[A' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 bindkey '^[OA' up-line-or-beginning-search
@@ -132,6 +140,8 @@ alias v="nvim"
 alias c="clear"
 
 (( $+commands[yazi] )) && alias y="yazi"
+(( $+commands[ddgr] )) && alias d="ddgr"
+(( $+commands[ddgr] )) && alias в="ddgr"
 (( $+commands[lazygit] )) && alias lg="lazygit"
 
 # ---------------------------------------------------------
