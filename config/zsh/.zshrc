@@ -53,12 +53,17 @@ setopt HIST_IGNORE_SPACE
 
 autoload -Uz compinit
 
-ZCOMPDUMP_FILE="${ZDOTDIR:-$HOME}/.zcompdump"
+ZCOMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump"
 
-if [[ -n "$ZCOMPDUMP_FILE"(#qN.mh+24) ]]; then
-    compinit -d "$ZCOMPDUMP_FILE"
+if [[ -n "$ZCOMPDUMP"(#qN.mh-24) ]]; then
+    compinit -C -d "$ZCOMPDUMP"
 else
-    compinit -C -d "$ZCOMPDUMP_FILE"
+    compinit -d "$ZCOMPDUMP"
+fi
+
+if [[ -s "$ZCOMPDUMP" &&
+      (! -s "$ZCOMPDUMP.zwc" || "$ZCOMPDUMP" -nt "$ZCOMPDUMP.zwc") ]]; then
+    zcompile "$ZCOMPDUMP"
 fi
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -140,9 +145,11 @@ alias v="nvim"
 alias c="clear"
 
 (( $+commands[yazi] )) && alias y="yazi"
-(( $+commands[ddgr] )) && alias d="ddgr"
-(( $+commands[ddgr] )) && alias в="ddgr"
 (( $+commands[lazygit] )) && alias lg="lazygit"
+if (( $+commands[ddgr] )); then
+    alias d="ddgr"
+    alias в="ddgr"
+fi
 
 # ---------------------------------------------------------
 # Git aliases
