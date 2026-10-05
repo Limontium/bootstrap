@@ -25,7 +25,7 @@ format = "[$output](bold cyan)  "
 format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](bold green) "
 truncation_length = 1
 truncate_to_repo = false
-read_only = " "
+read_only = "  "
 
 [git_branch]
 symbol = ""
