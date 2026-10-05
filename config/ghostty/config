@@ -38,4 +38,4 @@ keybind = ctrl+shift+right=goto_split:right
 
 mouse-scroll-multiplier = 0.95
 gtk-single-instance = true
-
+quit-after-last-window-closed = false
