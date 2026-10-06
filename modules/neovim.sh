@@ -60,6 +60,11 @@ install_neovim_platform_extras() {
                 wl-clipboard
             ;;
 
+        alpine)
+            # Alpine packages Node.js and npm separately.
+            pkg_install npm
+            ;;
+
         macos)
             # npm comes with Homebrew's node package.
             ;;
