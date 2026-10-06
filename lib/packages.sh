@@ -32,8 +32,9 @@ pkg_install() {
     local resolved
 
     for package in "${logical_packages[@]}"; do
-        resolved="$(pkg_name "$package")"
-        resolved_packages+=("$resolved")
+        while IFS= read -r resolved; do
+            [[ -n "$resolved" ]] && resolved_packages+=("$resolved")
+        done < <(pkg_name "$package")
     done
 
     pkg_install_backend "${resolved_packages[@]}"

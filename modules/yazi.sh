@@ -28,20 +28,39 @@ install_yazi_release() {
     local arch
     local target
     local checksum
+    local libc
     local url
     local tmp
 
     arch="$(uname -m)"
 
-    case "$arch" in
-        x86_64)
+    # The musl build is portable across Alpine and older glibc-based Debian
+    # releases whose libc is too old for the current GNU release artifact.
+    if [[ "$DISTRO_FAMILY" == "alpine" || "$DISTRO_FAMILY" == "debian" ]]; then
+        libc="musl"
+    else
+        libc="gnu"
+    fi
+
+    case "${arch}:${libc}" in
+        x86_64:gnu)
             target="x86_64-unknown-linux-gnu"
             checksum="a02fe91d3304294048c681f010f1100856872a4e98ecf6927328e888d40a6ad2"
             ;;
 
-        aarch64|arm64)
+        x86_64:musl)
+            target="x86_64-unknown-linux-musl"
+            checksum="9b9c39decccf8cb0ff53a7d637d38f8a79d93bbd0099f4ea9c619ef6bb392f5d"
+            ;;
+
+        aarch64:gnu|arm64:gnu)
             target="aarch64-unknown-linux-gnu"
             checksum="02807f08d6b589b65b7516a4e259d83f5995d7a23bb12b3a155141385b370b3a"
+            ;;
+
+        aarch64:musl|arm64:musl)
+            target="aarch64-unknown-linux-musl"
+            checksum="dd569daecaae914185f295634109295ccd25c1b42b02eb89a74f651970024f2e"
             ;;
 
         *)

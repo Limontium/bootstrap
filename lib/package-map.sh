@@ -48,6 +48,7 @@ pkg_name() {
         fd)
             case "$DISTRO_FAMILY" in
                 debian) printf '%s\n' "fd-find" ;;
+                fedora) printf '%s\n' "fd-find" ;;
                 *)      printf '%s\n' "fd" ;;
             esac
             ;;
@@ -60,6 +61,13 @@ pkg_name() {
             case "$DISTRO_FAMILY" in
                 debian) printf '%s\n' "build-essential" ;;
                 arch)   printf '%s\n' "base-devel" ;;
+                alpine) printf '%s\n' "build-base" ;;
+                fedora)
+                    printf '%s\n' "gcc" "gcc-c++" "make"
+                    ;;
+                suse)
+                    printf '%s\n' "gcc" "gcc-c++" "make"
+                    ;;
                 macos)  printf '%s\n' "make" ;;
                 *)      printf '%s\n' "make" ;;
             esac

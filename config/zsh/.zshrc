@@ -176,6 +176,10 @@ alias gcb="git switch -c"
 alias gb="git branch"
 alias gbD="git branch -D"
 
+alias gsta="git stash"
+alais gstp="git stash pop"
+alias gstc="git stash clear"
+
 # ---------------------------------------------------------
 # eza aliases
 # ---------------------------------------------------------
