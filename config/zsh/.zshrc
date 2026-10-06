@@ -177,7 +177,7 @@ alias gb="git branch"
 alias gbD="git branch -D"
 
 alias gsta="git stash"
-alais gstp="git stash pop"
+alias gstp="git stash pop"
 alias gstc="git stash clear"
 
 # ---------------------------------------------------------
