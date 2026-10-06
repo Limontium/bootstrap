@@ -140,6 +140,7 @@ fi
 
 alias v="nvim"
 alias c="clear"
+alias q="exit"
 
 (( $+commands[yazi] )) && alias y="yazi"
 (( $+commands[lazygit] )) && alias lg="lazygit"
