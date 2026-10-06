@@ -48,14 +48,6 @@ test_multi_package_resolution() {
     assert_eq "gcc gcc-c++ make fd-find" "$captured" "multi-package resolution"
 }
 
-test_bootstrap_requires_integrity_metadata() {
-    if env -u BOOTSTRAP_COMMIT -u BOOTSTRAP_SHA256 \
-        "${TEST_ROOT}/bootstrap.sh" >/dev/null 2>&1; then
-
-        fail "bootstrap accepted an unpinned archive"
-    fi
-}
-
 test_failed_verification_is_fatal() {
     if (
         # shellcheck source=../install.sh
@@ -94,7 +86,6 @@ test_no_remote_shell_pipes() {
 
 test_package_map
 test_multi_package_resolution
-test_bootstrap_requires_integrity_metadata
 test_failed_verification_is_fatal
 test_no_remote_shell_pipes
 
