@@ -1,45 +1,15 @@
 # ---------------------------------------------------------
-# Pinned shell plugins
+# Zinit
 # ---------------------------------------------------------
 
-PLUGIN_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/shell-plugins"
-PINNED_REPO_DIR=""
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
 
-ensure_pinned_repo() {
-    local repo_url="$1"
-    local name="$2"
-    local commit="$3"
-    local current_commit=""
+if [[ ! -d "$ZINIT_HOME" ]]; then
+    mkdir -p "${ZINIT_HOME:h}"
+    git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-    PINNED_REPO_DIR="${PLUGIN_HOME}/${name}"
-
-    if [[ -e "$PINNED_REPO_DIR" && ! -d "${PINNED_REPO_DIR}/.git" ]]; then
-        print -u2 "plugin path exists but is not a Git repository: ${PINNED_REPO_DIR}"
-        return 1
-    fi
-
-    if [[ ! -d "${PINNED_REPO_DIR}/.git" ]]; then
-        mkdir -p "$PINNED_REPO_DIR"
-        git -C "$PINNED_REPO_DIR" init -q || return 1
-        git -C "$PINNED_REPO_DIR" remote add origin "$repo_url" || return 1
-    else
-        git -C "$PINNED_REPO_DIR" remote set-url origin "$repo_url" || return 1
-        current_commit="$(git -C "$PINNED_REPO_DIR" rev-parse HEAD 2>/dev/null)"
-    fi
-
-    if [[ "$current_commit" != "$commit" ]]; then
-        git -C "$PINNED_REPO_DIR" fetch --quiet --depth=1 origin "$commit" ||
-            return 1
-        git -C "$PINNED_REPO_DIR" checkout --quiet --detach --force FETCH_HEAD ||
-            return 1
-        current_commit="$(git -C "$PINNED_REPO_DIR" rev-parse HEAD 2>/dev/null)"
-    fi
-
-    if [[ "$current_commit" != "$commit" ]]; then
-        print -u2 "commit verification failed for ${name}"
-        return 1
-    fi
-}
+source "$ZINIT_HOME/zinit.zsh"
 
 # ---------------------------------------------------------
 # Environment
@@ -102,42 +72,20 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
 
 # ---------------------------------------------------------
-# Plugins locked to reviewed commits
+# Zinit plugins
 # ---------------------------------------------------------
 
-if ensure_pinned_repo \
-    https://github.com/ohmyzsh/ohmyzsh.git \
-    ohmyzsh \
-    60c9a7a839b790cd905d0fd4419435124fd1bdc0; then
+zinit ice wait lucid
+zinit snippet OMZP::sudo
 
-    ZSH="$PINNED_REPO_DIR"
-    source "${PINNED_REPO_DIR}/plugins/sudo/sudo.plugin.zsh"
-    source "${PINNED_REPO_DIR}/plugins/extract/extract.plugin.zsh"
-fi
+zinit ice wait lucid
+zinit snippet OMZP::extract
 
-if ensure_pinned_repo \
-    https://github.com/Aloxaf/fzf-tab.git \
-    fzf-tab \
-    24105b15714bfec37989ed5c5b6e60f572253019; then
+zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
 
-    source "${PINNED_REPO_DIR}/fzf-tab.plugin.zsh"
-fi
-
-if ensure_pinned_repo \
-    https://github.com/zsh-users/zsh-autosuggestions.git \
-    zsh-autosuggestions \
-    85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5; then
-
-    source "${PINNED_REPO_DIR}/zsh-autosuggestions.zsh"
-fi
-
-if ensure_pinned_repo \
-    https://github.com/zdharma-continuum/fast-syntax-highlighting.git \
-    fast-syntax-highlighting \
-    4672ad5dd9ad68a7effc1476d65afb7c584ce2b3; then
-
-    source "${PINNED_REPO_DIR}/fast-syntax-highlighting.plugin.zsh"
-fi
+zinit ice wait lucid
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # ---------------------------------------------------------
 # fzf-tab
@@ -227,6 +175,10 @@ alias gcb="git switch -c"
 
 alias gb="git branch"
 alias gbD="git branch -D"
+
+alias gsta="git stash"
+alais gstp="git stash pop"
+alias gstc="git stash clear"
 
 # ---------------------------------------------------------
 # eza aliases
