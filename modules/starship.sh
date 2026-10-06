@@ -4,6 +4,8 @@
 # Starship
 # ------------------------------------------------------------
 
+readonly STARSHIP_VERSION="1.26.0"
+
 install_starship() {
     info "Installing and configuring Starship"
 
@@ -45,17 +47,53 @@ install_starship_debian() {
 }
 
 install_starship_official() {
-    command_exists curl ||
-        die "curl is required to install Starship"
+    local arch
+    local checksum
+    local target
+    local tmp
+    local url
 
-    info "Installing Starship using official installer"
+    arch="$(uname -m)"
 
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
+    case "$arch" in
+        x86_64)
+            target="x86_64-unknown-linux-musl"
+            checksum="b7c232b0e8249d8e55a40beb79c5c43a7d370f3f9408bd215deb0170daeaadf3"
+            ;;
+        aarch64|arm64)
+            target="aarch64-unknown-linux-musl"
+            checksum="dc30189378d2f2e287384e8a692d3f95ad1df64cf0e8c36aa9201516028aed6b"
+            ;;
+        *)
+            die "Unsupported architecture for Starship: ${arch}"
+            ;;
+    esac
 
-    command_exists starship ||
-        die "Starship installation failed"
+    command_exists curl || die "curl is required to install Starship"
+    command_exists tar || die "tar is required to install Starship"
+    command_exists sha256sum || die "sha256sum is required to verify Starship"
 
-    ok "Installed Starship"
+    tmp="$(mktemp -d)"
+    url="https://github.com/starship/starship/releases/download/v${STARSHIP_VERSION}/starship-${target}.tar.gz"
+
+    info "Downloading Starship ${STARSHIP_VERSION}"
+
+    curl -fsSL -o "${tmp}/starship.tar.gz" "$url"
+
+    if ! printf '%s  %s\n' \
+        "$checksum" \
+        "${tmp}/starship.tar.gz" \
+        | sha256sum -c - >/dev/null; then
+
+        rm -rf "$tmp"
+        die "Checksum verification failed for Starship ${STARSHIP_VERSION}"
+    fi
+
+    tar -xzf "${tmp}/starship.tar.gz" -C "$tmp" starship
+    run_sudo install -m 0755 "${tmp}/starship" /usr/local/bin/starship
+    rm -rf "$tmp"
+
+    ok "Installed Starship ${STARSHIP_VERSION}"
 }
 
 install_starship_config() {

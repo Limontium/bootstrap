@@ -4,9 +4,8 @@ set -euo pipefail
 
 readonly REPO_OWNER="ukondoby"
 readonly REPO_NAME="bootstrap"
-readonly REPO_BRANCH="main"
-
-readonly ARCHIVE_URL="https://gitlab.com/${REPO_OWNER}/${REPO_NAME}/-/archive/${REPO_BRANCH}/${REPO_NAME}-${REPO_BRANCH}.tar.gz"
+readonly REPO_COMMIT="${BOOTSTRAP_COMMIT:-}"
+readonly ARCHIVE_SHA256="${BOOTSTRAP_SHA256:-}"
 
 TMP_DIR=""
 
@@ -19,6 +18,16 @@ cleanup() {
 trap cleanup EXIT
 
 main() {
+    [[ "$REPO_COMMIT" =~ ^[0-9a-f]{40}$ ]] || {
+        printf 'error: BOOTSTRAP_COMMIT must be a full 40-character commit SHA\n' >&2
+        exit 1
+    }
+
+    [[ "$ARCHIVE_SHA256" =~ ^[0-9a-f]{64}$ ]] || {
+        printf 'error: BOOTSTRAP_SHA256 must be the trusted SHA-256 of the commit archive\n' >&2
+        exit 1
+    }
+
     command -v curl >/dev/null 2>&1 || {
         printf 'error: curl is required\n' >&2
         exit 1
@@ -29,22 +38,39 @@ main() {
         exit 1
     }
 
+    command -v sha256sum >/dev/null 2>&1 || {
+        printf 'error: sha256sum is required\n' >&2
+        exit 1
+    }
+
     TMP_DIR="$(mktemp -d)"
 
     printf '==> Downloading bootstrap repository\n'
 
+    local archive_url
+    archive_url="https://gitlab.com/${REPO_OWNER}/${REPO_NAME}/-/archive/${REPO_COMMIT}/${REPO_NAME}-${REPO_COMMIT}.tar.gz"
+
     curl -fsSL \
-        "$ARCHIVE_URL" \
+        "$archive_url" \
         -o "${TMP_DIR}/bootstrap.tar.gz"
 
-    printf '==> Extracting bootstrap repository\n'
+    printf '==> Verifying bootstrap archive\n'
+
+    printf '%s  %s\n' \
+        "$ARCHIVE_SHA256" \
+        "${TMP_DIR}/bootstrap.tar.gz" \
+        | sha256sum -c - >/dev/null
+
+    printf '==> Extracting verified bootstrap repository\n'
+
+    local repo_dir
+    repo_dir="${TMP_DIR}/repo"
+    mkdir -p "$repo_dir"
 
     tar -xzf \
         "${TMP_DIR}/bootstrap.tar.gz" \
-        -C "$TMP_DIR"
-
-    local repo_dir
-    repo_dir="${TMP_DIR}/${REPO_NAME}-${REPO_BRANCH}"
+        --strip-components=1 \
+        -C "$repo_dir"
 
     [[ -x "${repo_dir}/install.sh" ]] || {
         printf 'error: install.sh not found or not executable\n' >&2

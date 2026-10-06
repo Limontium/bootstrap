@@ -4,15 +4,26 @@ A lightweight bootstrap toolkit for setting up my Linux/macOS development enviro
 
 It installs and configures the tools I use every day, including Zsh, Ghostty, Neovim, CLI utilities, fonts, and development dependencies.
 
-## Quick install
+## Installation
 
-Run:
+Clone the repository, inspect the checked-out revision, and run the installer:
 
 ```bash
-bash -c "$(curl -fsSL https://gitlab.com/ukondoby/bootstrap/-/raw/main/bootstrap.sh)"
+git clone https://gitlab.com/ukondoby/bootstrap.git
+cd bootstrap
+git log -1 --oneline
+./install.sh
 ```
 
-The bootstrap script downloads the repository into a temporary directory, runs the installer, and removes the temporary files afterward.
+The project intentionally does not provide a `curl | bash` command. For automated
+installation, `bootstrap.sh` requires both a full commit SHA and a trusted SHA-256
+checksum published separately for that commit archive:
+
+```bash
+BOOTSTRAP_COMMIT=<40-character-commit-sha> \
+BOOTSTRAP_SHA256=<trusted-archive-sha256> \
+./bootstrap.sh
+```
 
 ## What it installs
 
@@ -99,6 +110,8 @@ Configuration files are copied rather than symlinked, so the bootstrap repositor
 │   ├── zypper.sh
 │   ├── apk.sh
 │   └── brew.sh
+├── tests/
+│   └── run.sh
 ├── modules/
 │   ├── base.sh
 │   ├── git.sh
@@ -112,16 +125,6 @@ Configuration files are copied rather than symlinked, so the bootstrap repositor
 └── config/
     ├── zsh/
     └── ghostty/
-```
-
-## Manual installation
-
-You can also clone the repository and run it directly:
-
-```bash
-git clone https://gitlab.com/ukondoby/bootstrap.git
-cd bootstrap
-./install.sh
 ```
 
 ## Notes

@@ -57,9 +57,8 @@ main() {
 
     printf '\n'
 
-    if ! verify_installation; then
-        warn "Some tools are missing. Check the messages above."
-    fi
+    verify_installation ||
+        die "Installation verification failed"
 
     printf '\n'
     ok "System bootstrap complete"
