@@ -38,6 +38,5 @@ keybind = ctrl+shift+down=goto_split:down
 keybind = ctrl+shift+up=goto_split:up
 keybind = ctrl+shift+right=goto_split:right
 
-mouse-scroll-multiplier = 0.95
 gtk-single-instance = true
 quit-after-last-window-closed = false

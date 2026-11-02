@@ -72,6 +72,14 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
 
 # ---------------------------------------------------------
+# fzf (key bindings: Ctrl+R / Ctrl+T / Alt+C)
+# ---------------------------------------------------------
+
+if (( $+commands[fzf] )); then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+fi
+
+# ---------------------------------------------------------
 # Zinit plugins
 # ---------------------------------------------------------
 
