@@ -13,13 +13,13 @@ install_base() {
         zoxide \
         eza \
         btop \
+        bat \
         jq \
         ddgr \
         ffmpegthumbnailer \
         poppler \
         imagemagick \
-        7zip \
-        fzf
+        7zip
 
     ok "Base system packages installed"
 }

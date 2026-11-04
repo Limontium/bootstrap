@@ -24,9 +24,12 @@ The current setup includes:
 - Neovim
 - Lazygit
 - Yazi
+- Posting
 - Zoxide
 - Eza
 - Btop
+- Bat
+- fzf
 - Ripgrep
 - fd
 - Node.js / npm
@@ -70,6 +73,8 @@ Then run the installer again.
 
 ## Existing configuration
 
+Posting config: `config/posting/config.yaml` → path from `posting locate config`.
+
 Existing configuration files are backed up before being replaced.
 
 Backups use timestamped filenames, for example:
@@ -103,15 +108,18 @@ Configuration files are copied rather than symlinked, so the bootstrap repositor
 │   └── run.sh
 ├── modules/
 │   ├── base.sh
+│   ├── fzf.sh
 │   ├── git.sh
 │   ├── zsh.sh
 │   ├── fonts.sh
 │   ├── lazygit.sh
 │   ├── yazi.sh
+│   ├── posting.sh
 │   ├── neovim.sh
 │   ├── nvim-config.sh
 │   └── ghostty.sh
 └── config/
+    ├── posting/
     ├── zsh/
     └── ghostty/
 ```

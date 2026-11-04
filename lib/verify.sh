@@ -15,9 +15,11 @@ verify_installation() {
         zsh \
         lazygit \
         yazi \
+        posting \
         zoxide \
         eza \
         btop \
+        fzf \
         jq \
         ghostty \
         nvim \
@@ -39,6 +41,14 @@ verify_installation() {
         ok "fdfind -> $(command -v fdfind)"
     else
         missing+=("fd/fdfind")
+    fi
+
+    if command_exists bat; then
+        ok "bat -> $(command -v bat)"
+    elif command_exists batcat; then
+        ok "batcat -> $(command -v batcat)"
+    else
+        missing+=("bat/batcat")
     fi
 
     if ((${#missing[@]} > 0)); then

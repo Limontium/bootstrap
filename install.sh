@@ -19,12 +19,14 @@ source "${ROOT_DIR}/lib/verify.sh"
 # ------------------------------------------------------------
 
 source "${ROOT_DIR}/modules/base.sh"
+source "${ROOT_DIR}/modules/fzf.sh"
 source "${ROOT_DIR}/modules/git.sh"
 source "${ROOT_DIR}/modules/zsh.sh"
 source "${ROOT_DIR}/modules/starship.sh"
 source "${ROOT_DIR}/modules/fonts.sh"
 source "${ROOT_DIR}/modules/lazygit.sh"
 source "${ROOT_DIR}/modules/yazi.sh"
+source "${ROOT_DIR}/modules/posting.sh"
 source "${ROOT_DIR}/modules/neovim.sh"
 source "${ROOT_DIR}/modules/nvim-config.sh"
 source "${ROOT_DIR}/modules/ghostty.sh"
@@ -45,12 +47,14 @@ main() {
     load_package_manager
 
     install_base
+    install_fzf
     install_git
     install_zsh
     install_starship
     install_fonts
     install_lazygit
     install_yazi
+    install_posting
     install_neovim
     install_nvim_config
     install_ghostty

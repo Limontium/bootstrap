@@ -15,7 +15,7 @@ source "$ZINIT_HOME/zinit.zsh"
 # Environment
 # ---------------------------------------------------------
 
-export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/go/bin:$HOME/go/bin:$PATH"
 
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
@@ -76,7 +76,7 @@ zstyle ':completion:*' verbose yes
 # ---------------------------------------------------------
 
 if (( $+commands[fzf] )); then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
+    source <(fzf --zsh)
 fi
 
 # ---------------------------------------------------------
@@ -149,6 +149,10 @@ fi
 alias v="nvim"
 alias c="clear"
 alias q="exit"
+
+if (( ! $+commands[bat] && $+commands[batcat] )); then
+    alias bat="batcat"
+fi
 
 (( $+commands[yazi] )) && alias y="yazi"
 (( $+commands[lazygit] )) && alias lg="lazygit"

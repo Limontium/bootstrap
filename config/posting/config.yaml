@@ -1,0 +1,15 @@
+theme: textual-dark
+layout: horizontal
+
+editor: nvim
+
+heading:
+  show_host: false
+
+focus:
+  on_startup: collection
+  on_response: body
+  on_request_open: body
+
+keymap:
+  open-in-editor: ctrl+e
